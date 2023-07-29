@@ -1,23 +1,26 @@
 # Create chef image that installs cargo chef
-FROM rust:latest as chef
+FROM rust:latest as planner
+WORKDIR /app
 RUN cargo install cargo-chef
-WORKDIR app
-
-# Create our planner image
-FROM chef as planner
 COPY . .
 RUN cargo chef prepare --recipe-path recipe.json
 
-FROM chef AS builder
+FROM rust:latest AS cacher
+WORKDIR /app
+RUN cargo install cargo-chef
 COPY --from=planner /app/recipe.json recipe.json
 # Build dependencies - this is the caching docker layer!
 RUN cargo chef cook --release --recipe-path recipe.json
 
 # Copy everything in current app
-COPY . ./app
+FROM rust:latest as builder 
+COPY . /app
 
 # Set the working directory to the app folder that we just copied everything in to.
 WORKDIR /app
+
+COPY --from=cacher /app/target target
+COPY --from=cacher /usr/local/cargo /usr/local/cargo
 
 # Build the image using release tag
 RUN cargo build --release
