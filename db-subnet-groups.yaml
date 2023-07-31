@@ -1,0 +1,15 @@
+apiVersion: rds.services.k8s.aws/v1alpha1
+kind: DBInstance
+metadata:
+  name: "desk1-datamart-subnet-group"
+  namespace: desk1-datamart-namespace
+spec:
+  name: desk1-datamart-subnet-group
+  description: "RDS SUBNET FOR DESK1 DATAMART"
+  subnetIDs:
+    -subnet-0a49206268c070a1b
+    -subnet-0e4ea65cfab0fd219
+    -subnet-00f05a3717260b411
+    -subnet-08f842ba586a40925
+
+  tags: []
