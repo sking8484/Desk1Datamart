@@ -53,4 +53,24 @@ resource "aws_dynamodb_table" "terraform_locks" {
 }
 ```
 
--
+- `terraform init`
+- `terraform apply`
+- Update main.tf to reflect remote
+
+```
+terraform {
+  backend "s3" {
+    bucket = "${your_bucket_name}"
+    key = "tf-infra/terraform.tfstate"
+    region = "${your_region}"
+    dynamodb_table = "terraform-state-locking"
+    encrypt = true
+  }
+  required_providers {
+  .
+  .
+  .
+}
+```
+
+- `terraform init`
