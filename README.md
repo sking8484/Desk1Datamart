@@ -2,20 +2,22 @@
 
 ## Initial Setup
 
-**AWS**
+### AWS
 
 1. Ensure you have AWS CLI set up and configured.
-   **Terraform**
+
+### Terraform
+
 1. Bootstrap Remote Backend
 
-- Initialize terraform without backend
+  - Initialize terraform without backend
 
-```
+  ```
   terraform {
-    required_providers {
-      aws = {
-        source = "hashicorp/aws"
-        version = "~> 3.0"
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+      version = "~> 3.0"
       }
     }
   }
@@ -24,4 +26,4 @@
     region = "us-east-1"
   }
 
-```
+  ```
