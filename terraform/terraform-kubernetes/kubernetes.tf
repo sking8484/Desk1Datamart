@@ -54,11 +54,11 @@ provider "kubernetes" {
   }
 }
 
-resource "kubernetes_deployment" "nginx" {
+resource "kubernetes_deployment" "rust-api" {
   metadata {
-    name = "scalable-nginx-example"
+    name = "datamart-rust-api"
     labels = {
-      App = "ScalableNginxExample"
+      App = "DataMartRustApi"
     }
   }
 
@@ -66,13 +66,13 @@ resource "kubernetes_deployment" "nginx" {
     replicas = 2
     selector {
       match_labels = {
-        App = "ScalableNginxExample"
+        App = "DataMartRustApi"
       }
     }
     template {
       metadata {
         labels = {
-          App = "ScalableNginxExample"
+          App = "DataMartRustApi"
         }
       }
       spec {
@@ -102,9 +102,9 @@ resource "kubernetes_deployment" "nginx" {
 }
 
 
-resource "kubernetes_service" "nginx" {
+resource "kubernetes_service" "api-service" {
   metadata {
-    name = "nginx-example"
+    name = "rust-api-load-balancer"
   }
   spec {
     selector = {

@@ -3,13 +3,16 @@
 
 terraform {
 
-  /*
+  
   cloud {
+    organization = "Desk1Datamart"
+
     workspaces {
-      name = "learn-terraform-eks"
+      name = "datamart-infrastructure"
     }
   }
-  */
+
+  
 
   required_providers {
     aws = {
