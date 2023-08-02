@@ -10,13 +10,23 @@ terraform {
       version = ">= 2.16.1"
     }
   }
+  cloud {
+    organization = "Desk1Datamart"
+
+    workspaces {
+      name = "datamart-kubernetes"
+    }
+  }
 }
 
 data "terraform_remote_state" "eks" {
-  backend = "local"
+  backend = "remote"
 
   config = {
-    path = "../terraform.tfstate"
+    organization = "Desk1Datamart"
+    workspaces = {
+      name = "datamart-infrastructure"
+    }
   }
 }
 
