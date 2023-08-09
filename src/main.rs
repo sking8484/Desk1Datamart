@@ -16,7 +16,7 @@ async fn main() -> std::io::Result<()> {
 
 #[get("/")]
 async fn hello() -> impl Responder {
-    HttpResponse::Ok().body("Hello world")
+    HttpResponse::Ok().body(env!("DB_PASSWORD"))
 }
 
 
@@ -28,4 +28,14 @@ async fn echo(req_body: String) -> impl Responder {
 
 async fn manual_hello() -> impl Responder {
     HttpResponse::Ok().body("Hey there guy!")
+}
+
+
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn grab_env_variables() {
+        println!("DB_PASSWORD IS: {}", env!("DB_PASSWORD"))
+    }
 }

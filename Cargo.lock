@@ -7,6 +7,7 @@ name = "Desk1Datamart"
 version = "0.1.0"
 dependencies = [
  "actix-web",
+ "dotenv-build",
 ]
 
 [[package]]
@@ -412,6 +413,12 @@ dependencies = [
  "block-buffer",
  "crypto-common",
 ]
+
+[[package]]
+name = "dotenv-build"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f4547f16c17f6051a12cdb8c62b803f94bee6807c74aa7c530b30b737df981fc"
 
 [[package]]
 name = "encoding_rs"

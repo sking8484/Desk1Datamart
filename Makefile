@@ -1,24 +1,28 @@
-include .env
+include ./env/.env
 
 build-image:
 	docker build -t $(DOCKER_IMAGE_TAG) .; \
 	docker push $(DOCKER_IMAGE_TAG);
 
-create-eks-cluster:
-	eksctl create cluster --name $(EKS_CLUSTER_NAME) --region $(AWS_DEFAULT_REGION)
+.ONESHELL:
+check-env-local:
+ifeq ("$(ENV)", "LOCAL")
+	@echo "Running Locally"
+else 
+	@echo "ENV is set to prod. Please adjust"
+	exit 1
+endif
+.ONESHELL:
+run-containers-local:check-env-local 
+	@echo $(DB_PASSWORD)
+	@docker run -p 8080:8080 --name $(DOCKER_IMAGE_NAME) -d $(DOCKER_IMAGE_TAG);
+	@docker run -p 3307:3306 --name mysql -e MYSQL_ROOT_PASSWORD=$(DB_PASSWORD) -d mysql 
 
-create-eks-namespace:create-eks-cluster
-	kubectl create namespace eks-sample-app
+.ONESHELL:
+deploy-local: run-containers-local
+	@echo "Deploy Locally"
 
-deploy-helm-chart:
-	cd ./datamart-chart/datamart; \
-	pwd; \
-	helm install datamart . --set ImageName=$(DOCKER_IMAGE_TAG);
-
-
-
-
-
-
-
-deploy:
+.ONESHELL:
+destroy-local:
+	@docker rm --force $(DOCKER_IMAGE_NAME)
+	@docker rm --force mysql
