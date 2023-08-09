@@ -14,8 +14,8 @@ Datamart is a stateless API serving [Desk1 Trading](https://deskonetrading.com).
 
 1. Create an env folder at root level.
 2. Inside of this folder, create a .env-local .env-prod and a .env-template file.
-   a. The .env-template file will be used for envsubst later on
-   b. Add variables like ENV=$ENV into the .env-template file. These will be filled
+   1. The .env-template file will be used for envsubst later on
+   2. Add variables like ENV=$ENV into the .env-template file. These will be filled
 
 #### Running
 
