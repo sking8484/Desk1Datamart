@@ -2,8 +2,13 @@
 name = "Desk1Datamart"
 version = "0.1.0"
 edition = "2021"
+build = "src/build.rs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 actix-web="4"
+
+
+[build-dependencies]
+dotenv-build = "0.1.1"
