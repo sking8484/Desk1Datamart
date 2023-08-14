@@ -16,10 +16,10 @@ Datamart is a stateless API serving [Desk1 Trading](https://deskonetrading.com).
 2. Inside of this folder, create a .env-local .env-prod and a .env-template file.
    1. The .env-template file will be used for envsubst later on
    2. Add variables like ENV=$ENV into the .env-template file. These will be filled
+3. Update the .env-local, .env-prod and the .env-template file with what your respective variables.
+4. The resulting .env file will be env/.env. Point your code to that file.
 
 #### Running
 
-1. Export your env variables in whichever env you are in by sourcing the respective file.
-2. run `envsubst < .env-template > .env` to substitute the recently sourced variables into the .env file
-3. cd back to top level
-4. Run make-deploy
+1. At top level, to prepare for a local or production, run `make build-env-local` or `make build-env-prod`
+2. Run make-deploy

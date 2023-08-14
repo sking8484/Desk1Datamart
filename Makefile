@@ -1,5 +1,11 @@
 include ./env/.env
 
+build-env-prod:
+	. ./env/.env-prod && envsubst < env/.env-template > env/.env
+
+build-env-local:
+	. ./env/.env-local &&envsubst < env/.env-template > env/.env
+
 build-image:
 	docker build -t $(DOCKER_IMAGE_TAG) .; \
 	docker push $(DOCKER_IMAGE_TAG);
