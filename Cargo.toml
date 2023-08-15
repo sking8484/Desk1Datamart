@@ -8,6 +8,7 @@ build = "src/build.rs"
 
 [dependencies]
 actix-web="4"
+mysql = "24.0.0"
 
 
 [build-dependencies]
