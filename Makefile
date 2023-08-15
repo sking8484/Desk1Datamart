@@ -21,7 +21,14 @@ endif
 .ONESHELL:
 run-containers-local:check-env-local 
 	@docker run -p 8080:8080 --name $(DOCKER_IMAGE_NAME) -d $(DOCKER_IMAGE_TAG);
-	@docker run -p 3307:3306 --name mysql -e MYSQL_ROOT_PASSWORD=$(MYSQL_PASSWORD) -d mysql 
+	@docker run -p $(MYSQL_PORT):3306 --name mysql -e MYSQL_ROOT_PASSWORD=$(MYSQL_PASSWORD) -d mysql 
+
+.ONESHELL:
+test-local:
+	@docker run -p $(MYSQL_PORT):3306 --name mysql -e MYSQL_ROOT_PASSWORD=$(MYSQL_PASSWORD) -d mysql
+	sleep 10
+	cargo test
+	@docker rm --force mysql
 
 .ONESHELL:
 deploy-local: run-containers-local

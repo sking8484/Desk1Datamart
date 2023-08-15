@@ -4,9 +4,17 @@ mod utils;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    HttpServer::new(|| {
+
+    let db_util = utils::db_utils::DataBaseUtils::new();
+    let builder = db_util.get_conn_builder();
+
+    let pool = mysql::Pool::new(builder).unwrap();
+    let shared_data = web::Data::new(pool);
+    
+    HttpServer::new(move || {
         App::new()
-        .service(hello)
+            .app_data(shared_data.clone())
+            .service(hello)
             .service(echo)
             .route("/hey", web::get().to(manual_hello))
     })
@@ -17,7 +25,7 @@ async fn main() -> std::io::Result<()> {
 
 #[get("/")]
 async fn hello() -> impl Responder {
-    HttpResponse::Ok().body(env!("DB_PASSWORD"))
+    HttpResponse::Ok().body(env!("MYSQL_PASSWORD"))
 }
 
 
@@ -35,8 +43,32 @@ async fn manual_hello() -> impl Responder {
 
 #[cfg(test)]
 mod tests {
+    use crate::utils;
+    use mysql;
+    use mysql::prelude::*;
+
     #[test]
     fn grab_env_variables() {
-        println!("DB_PASSWORD IS: {}", env!("DB_PASSWORD"))
+        println!("DB_PASSWORD IS: {}", env!("MYSQL_PASSWORD"))
+    }
+
+
+    #[test]
+    fn test_create_table() {
+        let db_util = utils::db_utils::DataBaseUtils::new();
+        let builder = db_util.get_conn_builder();
+        let pool = mysql::Pool::new(builder).unwrap();
+        let mut conn = pool.get_conn().unwrap();
+        conn.query_drop(
+            r"CREATE TEMPORARY TABLE payment (
+                customer_id int not null,
+                amount int not null
+            )"
+        ).unwrap();
+
+
+
+
+
     }
 }
