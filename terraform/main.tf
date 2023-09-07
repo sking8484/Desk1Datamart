@@ -96,3 +96,10 @@ resource "aws_eip" "lb" {
   domain = "vpc"
 }
 
+resource "aws_route53_record" "primary" {
+  zone_id = "Z040527814BU58MCAKPS0"
+  name = "deskonecloud.com"
+  type = "A"
+  ttl = 300
+  records = [aws_eip.lb.publis_ip]
+}
