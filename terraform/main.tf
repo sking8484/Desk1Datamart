@@ -74,7 +74,6 @@ resource "aws_instance" "foo" {
   subnet_id = aws_subnet.datamart_subnet.id
   vpc_security_group_ids = [aws_security_group.allow_ssh.id]
 
-  associate_public_ip_address = true
   user_data = <<EOF
 #! /bin/bash
 sudo apt update -y
@@ -92,4 +91,8 @@ sudo docker run -p 80:8080 -d lebesgel/desk1_datamart
 EOF
 }
 
+resource "aws_eip" "lb" {
+  instance = aws_instance.foo.id
+  domain = "vpc"
+}
 
