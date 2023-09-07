@@ -1,0 +1,14 @@
+services:
+  datamart:
+    build:
+      context: .
+      dockerfile: images/datamart/Dockerfile
+    ports:
+      - "8000:8080"
+
+  proxy:
+    build:
+      context: images/proxy
+      dockerfile: ./Dockerfile
+    links:
+      - "datamart:datamart_ip"

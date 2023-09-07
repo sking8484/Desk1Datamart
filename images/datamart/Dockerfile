@@ -1,11 +1,11 @@
 # Create chef image that installs cargo chef
-FROM rust:latest as planner
+FROM rust:1.72.0-bookworm as planner
 WORKDIR /app
 RUN cargo install cargo-chef
 COPY . .
 RUN cargo chef prepare --recipe-path recipe.json
 
-FROM rust:latest AS cacher
+FROM rust:1.72.0-bookworm AS cacher
 WORKDIR /app
 RUN cargo install cargo-chef
 COPY --from=planner /app/recipe.json recipe.json
@@ -13,7 +13,7 @@ COPY --from=planner /app/recipe.json recipe.json
 RUN cargo chef cook --release --recipe-path recipe.json
 
 # Copy everything in current app
-FROM rust:latest as builder 
+FROM rust:1.72.0-bookworm as builder 
 COPY . /app
 
 # Set the working directory to the app folder that we just copied everything in to.
@@ -26,7 +26,7 @@ COPY --from=cacher /usr/local/cargo /usr/local/cargo
 RUN cargo build --release
 
 # Pull down small debian image hosted on google container repo
-FROM gcr.io/distroless/cc-debian11 AS runtime
+FROM rust:1.72.0-bookworm AS runtime
 
 # Copy release build from builder image
 COPY --from=builder /app/target/release/Desk1Datamart /app/Desk1Datamart
