@@ -12,3 +12,5 @@ services:
       dockerfile: ./Dockerfile
     links:
       - "datamart:datamart_ip"
+    ports:
+      - "8001:80"
