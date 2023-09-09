@@ -12,7 +12,7 @@ impl DataBaseUtils {
         let db_password = env!("MYSQL_PASSWORD").to_string();
         let db_host = env!("MYSQL_HOST").to_string();
         let db_port = env!("MYSQL_PORT").to_string();
-        let db_name = env!("MYSQL_DBNAME").to_string();
+        let db_name = env!("MYSQL_DATABASE").to_string();
         let db_port = db_port.parse().unwrap();
 
         return DataBaseUtils { db_user: db_user,
