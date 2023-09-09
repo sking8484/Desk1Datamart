@@ -64,7 +64,7 @@ resource "aws_route_table_association" "subnet-association" {
 
 resource "aws_instance" "foo" {
   key_name = "datamart_key"
-  ami = "ami-024e6efaf93d85776"
+  ami = var.docker_ami
   instance_type = "t2.micro"
 
 
@@ -74,21 +74,6 @@ resource "aws_instance" "foo" {
   subnet_id = aws_subnet.datamart_subnet.id
   vpc_security_group_ids = [aws_security_group.allow_ssh.id]
 
-  user_data = <<EOF
-#! /bin/bash
-sudo apt update -y
-sudo apt-get install apt-transport-https ca-certificates curl software-properties-common -y
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu  $(lsb_release -cs)  stable" -y
-sudo apt update -y
-sudo apt-get install docker-ce -y
-sudo systemctl start docker
-sudo systemctl enable docker
-sudo groupadd docker
-sudo usermod -aG docker ubuntu
-sudo docker pull lebesgel/desk1_datamart
-sudo docker run -p 80:8080 -d lebesgel/desk1_datamart
-EOF
 }
 
 resource "aws_eip" "lb" {
@@ -97,9 +82,9 @@ resource "aws_eip" "lb" {
 }
 
 resource "aws_route53_record" "primary" {
-  zone_id = "Z040527814BU58MCAKPS0"
+  zone_id = var.hosted_zone_id
   name = "deskonecloud.com"
   type = "A"
   ttl = 300
-  records = [aws_eip.lb.publis_ip]
+  records = [aws_eip.lb.public_ip]
 }
